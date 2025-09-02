@@ -11,31 +11,34 @@ function runTimeoutExample() {
 
 document.getElementById("timeoutBtn").addEventListener("click", runTimeoutExample);
 
-/* PART 2 */
 function getQuoteWithPromises() {
-  fetch("https://favqs.com/api/qotd")
+  fetch("https://api.allorigins.win/get?url=" + encodeURIComponent("https://zenquotes.io/api/random"))
     .then(response => response.json())
     .then(data => {
-      document.getElementById("promiseOutput").src = data.quote.body; 
+      let parsed = JSON.parse(data.contents);
+      let quote = parsed[0];
+      document.getElementById("promiseOutput").innerText =
+        `"${quote.q}" — ${quote.a}`;
     })
     .catch(error => {
-      console.error("Error fetching dog:", error);
-      document.getElementById("promiseOutput").alt = "Error fetching dog image.";
+      console.error("Error fetching quote:", error);
+      document.getElementById("promiseOutput").innerText = "Error fetching quote.";
     });
 }
 
 document.getElementById("promiseBtn").addEventListener("click", getQuoteWithPromises);
 
-/* PART 3 */
+document.getElementById("promiseBtn").addEventListener("click", getQuoteWithPromises);
 
+/* PART 3 */
 async function getQuoteWithAsync() {
   try {
-    let response = await fetch("https://www.boredapi.com/api/activity");
+    let response = await fetch("https://api.chucknorris.io/jokes/random");
     let data = await response.json();
-    document.getElementById("asyncOutput").innerText = data.content; 
+    document.getElementById("asyncOutput").innerText = `Joke: ${data.value}`;
   } catch (error) {
-    console.error("Error fetching quote:", error);
-    document.getElementById("asyncOutput").innerText = "Error fetching quote.";
+    console.error("Error fetching joke:", error);
+    document.getElementById("asyncOutput").innerText = "Error fetching joke.";
   }
 }
 
